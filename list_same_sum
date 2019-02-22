@@ -1,11 +1,12 @@
 #define a list
-a = [1, 3, 6, 4, 2, 7, 7,1]
+a = [1, 3, 6, 4, 2, 5, 7]
 sums = 7
 #decending order to improve loop performance
 a.sort(reverse=True)
 print('list a', a)
 #output stored in one list
 nlist=[]
+exclude=[]
 
 def cons_sum(arr, sums, nlist, preval):
     #preval is used to store subitem for recursive call.
@@ -17,13 +18,16 @@ def cons_sum(arr, sums, nlist, preval):
                 nlist.append([arr[i]])
             else:
                 temp = preval + [(arr[i])]
+                #for i in temp: exclude.append(i) #invoild repeated use
                 nlist.append(temp)
+
         elif arr[i] < sums:
             next_total = sums - arr[i]
             if next_total > 0:
-                cons_sum(arr[i+1:], next_total, nlist, preval + [arr[i]])
+                cons_sum( [i for i in arr[i+1:] if i not in exclude], next_total, nlist, preval + [arr[i]])
             elif next_total == 0:
                 nlist.append([preval + arr[i]])
+
 
     # return nlist
 
